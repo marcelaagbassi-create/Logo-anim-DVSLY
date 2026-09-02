@@ -1,0 +1,38 @@
+// components/AudioPlayer.tsx
+import React, { useEffect } from 'react';
+import TrackPlayer, { Capability, State, usePlaybackState } from 'react-native-track-player';
+
+export const useSetupPlayer = () => {
+  useEffect(() => {
+    const setup = async () => {
+      await TrackPlayer.setupPlayer();
+      await TrackPlayer.updateOptions({
+        capabilities: [
+          Capability.Play,
+          Capability.Pause,
+          Capability.SkipToNext,
+          Capability.SkipToPrevious,
+          Capability.Stop,
+        ],
+        compactCapabilities: [Capability.Play, Capability.Pause],
+      });
+    };
+    setup();
+  }, []);
+};
+
+export const PlayerControls = ({ track }) => {
+  const playbackState = usePlaybackState();
+
+  const togglePlayback = async () => {
+    if (playbackState.state === State.Paused || playbackState.state === State.Ready) {
+      await TrackPlayer.play();
+    } else {
+      await TrackPlayer.pause();
+    }
+  };
+
+  return (
+    // UI du bouton Play/Pause ici
+  );
+};
